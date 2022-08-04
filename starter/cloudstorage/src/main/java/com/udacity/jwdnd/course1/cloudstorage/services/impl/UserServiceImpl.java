@@ -31,20 +31,22 @@ public class UserServiceImpl implements UserService {
         if(null != userMapper.getUser(user.getUsername())) {
             return CommonMsg.EXISTED_USER;
         } else {
-            if (this.createNewUser(user)) {
-                return null;
-            } else return CommonMsg.ACTION_FAIL;
+            int result = this.createNewUser(user);
+            if (result < 0) {
+                return CommonMsg.ACTION_FAIL;
+            }
         }
+        return null;
     }
 
-    private boolean createNewUser(User user) {
+    private int createNewUser(User user) {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
         secureRandom.nextBytes(salt);
         String encodeSalt = Base64.getEncoder().encodeToString(salt);
         String passwordHashed = hashService.getHashedValue(user.getPassword(), encodeSalt);
         User newUser = new User(null, user.getUsername(), passwordHashed, encodeSalt, user.getFirstName(), user.getLastName());
-        return 0 < userMapper.insertUser(newUser);
+        return userMapper.insertUser(newUser);
     }
 
 }

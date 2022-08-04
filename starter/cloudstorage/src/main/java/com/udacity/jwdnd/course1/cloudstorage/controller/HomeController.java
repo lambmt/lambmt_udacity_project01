@@ -34,9 +34,9 @@ public class HomeController {
         int userId = userService.getUser(principal.getName()).getUserId();
 
         model.addAttribute("encryptionService", encryptionService);
-        model.addAttribute("fileList", fileMapper.getFilesByUserId(userId));
-        model.addAttribute("noteList", noteMapper.getNotesByUserId(userId));
-        model.addAttribute("credentialList", credentialMapper.getCredentialsByUserId(userId));
+        model.addAttribute("files", fileMapper.getFilesByUserId(userId));
+        model.addAttribute("notes", noteMapper.getNotesByUserId(userId));
+        model.addAttribute("credentials", credentialMapper.getCredentialsByUserId(userId));
 
         return "home";
     }
